@@ -1,4 +1,6 @@
 {
+  "name": "clickthulu/activitypub-signature",
+  "description": "Library to provide some clear cut validation of AP signatures",
   "type": "project",
   "license": ["GPL-3.0-or-later"],
   "minimum-stability": "stable",
