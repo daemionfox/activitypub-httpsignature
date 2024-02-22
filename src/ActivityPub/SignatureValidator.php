@@ -224,7 +224,7 @@ class SignatureValidator extends BaseSignature
         $canon = $this->canonicalizeHeadersForSig($sig_params['headers'], $headers);
 
         $valid = openssl_verify($canon, base64_decode($sig_params['signature']), $pubkey, OPENSSL_ALGO_SHA256);
-        if ($valid) {
+        if ($valid === 1) {
             return true;
         }
         throw new APSignatureMismatchException(self::ERR_SIG_MISMATCH);
