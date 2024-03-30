@@ -32,6 +32,8 @@ class RequestSigner extends BaseSignature
             "Signature" => '',
             "Host" => parse_url($url, PHP_URL_HOST)
         ];
+        // (DATE_RFC7231, or "D, d M Y H:i:s \G\M\T", if you need to support PHP <7.1.5 and <7.0.19)
+        $date = gmdate(DATE_RFC7231, $time);
 
         $sig_params = [
             'algorithm' => 'rsa-sha256',
@@ -43,7 +45,7 @@ class RequestSigner extends BaseSignature
             $sig_params['headers'] = ['(request-target)', 'host', 'date'];
 
         } elseif ('post' == $method) {
-            $sig_params['headers'] = ['(request-target)', 'host', 'digest', 'content-type'];
+            $sig_params['headers'] = ['(request-target)', 'host', 'date', 'digest', 'content-type'];
             if (empty($body)) {
                 throw new APSigningEmptyPostBodyException(self::ERR_EMPTY_POST_BODY);
             }
@@ -61,8 +63,6 @@ class RequestSigner extends BaseSignature
         if (0 == $time) {
             $time = time();
         }
-        // (DATE_RFC7231, or "D, d M Y H:i:s \G\M\T", if you need to support PHP <7.1.5 and <7.0.19)
-        $date = gmdate(DATE_RFC7231, $time);
         $headers_out['Date'] = $date;
 
         // Extract path from $url, as needed for (request-target) meta header
