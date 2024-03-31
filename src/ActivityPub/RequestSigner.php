@@ -49,7 +49,7 @@ class RequestSigner extends BaseSignature
             if (empty($body)) {
                 throw new APSigningEmptyPostBodyException(self::ERR_EMPTY_POST_BODY);
             }
-            $headers_out['Digest'] = 'SHA-256='.base64_encode(hash('sha256', $body));
+            $headers_out['Digest'] = 'SHA-256='.base64_encode(hash('sha256', $body, true));
 
             if (empty($contenttype)) {
                 throw new APSigningEmptyContentTypeException(self::ERR_EMPTY_CONTENTTYPE);
@@ -63,6 +63,7 @@ class RequestSigner extends BaseSignature
         if (0 == $time) {
             $time = time();
         }
+        /** @noinspection DuplicatedCode */
         $headers_out['Date'] = $date;
 
         // Extract path from $url, as needed for (request-target) meta header
