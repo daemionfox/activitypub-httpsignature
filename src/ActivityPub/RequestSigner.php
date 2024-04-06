@@ -36,8 +36,8 @@ class RequestSigner extends BaseSignature
         $date = gmdate(DATE_RFC7231, $time);
 
         $sig_params = [
-            'algorithm' => 'rsa-sha256',
             'keyId' => $keyid,
+            'algorithm' => 'rsa-sha256',
             'headers' => []
         ];
         $method = strtolower($method);
